@@ -11,7 +11,6 @@ module.exports = {
         "airbnb",
         "airbnb/hooks"
     ],
-
     parserOptions: {
         ecmaVersion: 2018,
         sourceType: "module",
@@ -42,7 +41,15 @@ module.exports = {
         "no-unused-vars": "off",
         "@typescript-eslint/no-unused-vars": "error",
         "no-shadow": "off",
-        "@typescript-eslint/no-shadow": ["error"]
+        "@typescript-eslint/no-shadow": ["error"],
+        "comma-dangle": ["error", "never"],
+        "react/react-in-jsx-scope": "off",
+        "object-curly-newline": ["error", {
+            "ObjectExpression": "always",
+            "ObjectPattern": { "multiline": true },
+            "ImportDeclaration": "never",
+            "ExportDeclaration": { "multiline": true, "minProperties": 3 }
+        }]
     },
     settings: {
         react: {

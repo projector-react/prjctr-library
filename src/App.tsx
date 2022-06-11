@@ -1,11 +1,4 @@
-import React, { useState } from 'react';
+import { FC } from 'react';
+import { AppRouter } from './components';
 
-export const App: React.FC = () => {
-    const [name, setName] = useState('worlddd');
-    return (
-        <>
-            <input value={name} onChange={e => setName(e.target.value)} />
-            <h1>Hello, {name}!</h1>
-        </>
-    );
-};
+export const App: FC = () => <AppRouter />;

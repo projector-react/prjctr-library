@@ -11,6 +11,9 @@ export default (environment: string): Configuration & WebpackDevServerConfigurat
         entry: {
             index: "./src/index.ts"
         },
+        output: {
+            publicPath: "/",
+        },
         module: {
             rules: [
                 {
@@ -37,12 +40,12 @@ export default (environment: string): Configuration & WebpackDevServerConfigurat
         mode: isDevelopment ? 'development' : 'production',
         devtool: "inline-source-map",
         devServer: {
-            hot: true
+            hot: true,
+            historyApiFallback: true,
         },
         plugins: [
             isDevelopment && new ReactRefreshWebpackPlugin(),
             new HtmlWebpackPlugin({
-
                 template: "./src/index.html"
             })
         ].filter(Boolean),
