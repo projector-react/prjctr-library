@@ -1,4 +1,10 @@
-import { IRouter, RouterNavigateFunction } from './types';
+export interface IRouter {
+    readonly navigate: (path: string) => void;
+}
+
+export interface RouterNavigateFunction {
+    (to: string): void;
+}
 
 export class ReactRouterService implements IRouter {
     private readonly navigator: RouterNavigateFunction;

@@ -25,7 +25,7 @@ module.exports = {
         jest: true
     },
     rules: {
-        "indent": ["error", 4],
+        "indent": ["error", 4, { "SwitchCase": 1 }],
         "arrow-parens": [0],
         "import/prefer-default-export": [0],
         "import/extensions": [0],
@@ -34,6 +34,7 @@ module.exports = {
         "react/prop-types": "off",
         "react/jsx-one-expression-per-line": "off",
         "react/jsx-indent": ["error", 4],
+        "react/jsx-indent-props": ["error", 4],
         "react/require-default-props": "off",
         "react/destructuring-assignment": "off",
         "react/jsx-boolean-value": "off",
