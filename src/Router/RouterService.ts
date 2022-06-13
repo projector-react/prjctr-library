@@ -1,5 +1,5 @@
 export interface IRouter {
-    readonly navigate: (path: string) => void;
+    readonly navigateTo: (path: string) => void;
 }
 
 export interface RouterNavigateFunction {
@@ -7,13 +7,13 @@ export interface RouterNavigateFunction {
 }
 
 export class ReactRouterService implements IRouter {
-    private readonly navigator: RouterNavigateFunction;
+    private readonly navigate: RouterNavigateFunction;
 
-    constructor(navigator: RouterNavigateFunction) {
-        this.navigator = navigator;
+    constructor(navigate: RouterNavigateFunction) {
+        this.navigate = navigate;
     }
 
-    public navigate(path: string) {
-        this.navigator(path);
+    public navigateTo(path: string) {
+        this.navigate(path);
     }
 }

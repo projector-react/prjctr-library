@@ -45,7 +45,7 @@ export const RouterProvider: FC<RouterProviderType> = ({ children }) => {
         const routerService = new ReactRouterService(navigator);
 
         return {
-            navigate: (path: string) => routerService.navigate(path),
+            navigate: (path: string) => routerService.navigateTo(path),
             getPath: (route: RouteName) => getRoutePath(route)
         };
     }, [navigator]);
