@@ -11,7 +11,6 @@ module.exports = {
         "airbnb",
         "airbnb/hooks"
     ],
-
     parserOptions: {
         ecmaVersion: 2018,
         sourceType: "module",
@@ -26,7 +25,7 @@ module.exports = {
         jest: true
     },
     rules: {
-        "indent": ["error", 4],
+        "indent": ["error", 4, { "SwitchCase": 1 }],
         "arrow-parens": [0],
         "import/prefer-default-export": [0],
         "import/extensions": [0],
@@ -35,6 +34,7 @@ module.exports = {
         "react/prop-types": "off",
         "react/jsx-one-expression-per-line": "off",
         "react/jsx-indent": ["error", 4],
+        "react/jsx-indent-props": ["error", 4],
         "react/require-default-props": "off",
         "react/destructuring-assignment": "off",
         "react/jsx-boolean-value": "off",
@@ -42,7 +42,15 @@ module.exports = {
         "no-unused-vars": "off",
         "@typescript-eslint/no-unused-vars": "error",
         "no-shadow": "off",
-        "@typescript-eslint/no-shadow": ["error"]
+        "@typescript-eslint/no-shadow": ["error"],
+        "comma-dangle": ["error", "never"],
+        "react/react-in-jsx-scope": "off",
+        "object-curly-newline": ["error", {
+            "ObjectExpression": "always",
+            "ObjectPattern": { "multiline": true },
+            "ImportDeclaration": "never",
+            "ExportDeclaration": { "multiline": true, "minProperties": 3 }
+        }]
     },
     settings: {
         react: {
