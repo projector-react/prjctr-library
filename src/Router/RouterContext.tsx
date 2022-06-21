@@ -1,6 +1,6 @@
 import { createContext, FC, ReactNode, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ReactRouterService } from './RouterService';
+import { ReactRouterService } from './router-service';
 
 export enum RouteName {
     LOGIN = 'LOGIN',
