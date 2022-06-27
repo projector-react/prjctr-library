@@ -9,7 +9,8 @@
   "private": true,
   "scripts": {
     "dev": "TS_NODE_PROJECT=./.dev/webpack/tsconfig.webpack.json webpack-dev-server --config ./.dev/webpack/webpack.config.ts",
-    "lint": "eslint --ext .js,.ts,.tsx,.jsx src"
+    "lint": "eslint --ext .js,.ts,.tsx,.jsx src",
+    "generate:api": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8000/openapi.json -g typescript-axios -o ./src/api -c config.json"
   },
   "dependencies": {
     "axios": "^0.27.2",
