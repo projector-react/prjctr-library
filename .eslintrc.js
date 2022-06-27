@@ -50,7 +50,8 @@ module.exports = {
             "ObjectPattern": { "multiline": true },
             "ImportDeclaration": "never",
             "ExportDeclaration": { "multiline": true, "minProperties": 3 }
-        }]
+        }],
+        "camelcase": ["error", { "ignoreDestructuring": true } ],
     },
     settings: {
         react: {
