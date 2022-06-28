@@ -21,10 +21,9 @@ export type AuthProviderType = {
 
 export const AuthContext = createContext<AuthState>(authInitialState);
 
-const { isAuthenticated, register, login, logout } = createAuthService(createAxiosHTTPService());
+const { isAuthenticated$, register, login, logout } = createAuthService(createAxiosHTTPService());
 
 export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
-    const isAuthenticated$ = isAuthenticated();
     const isAuth = useObservableState(isAuthenticated$, false);
 
     const authState = useMemo(
