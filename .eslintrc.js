@@ -22,6 +22,7 @@ module.exports = {
     env: {
         browser: true,
         node: false,
+        es2021: true,
         jest: true
     },
     rules: {
@@ -52,6 +53,7 @@ module.exports = {
             "ExportDeclaration": { "multiline": true, "minProperties": 3 }
         }],
         "camelcase": ["error", { "ignoreDestructuring": true } ],
+        "implicit-arrow-linebreak": ["error", "below"],
     },
     settings: {
         react: {

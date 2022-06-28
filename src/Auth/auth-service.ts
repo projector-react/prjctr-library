@@ -1,14 +1,4 @@
-import {BehaviorSubject,
-    distinctUntilChanged,
-    map,
-    merge,
-    Observable,
-    pluck,
-    scan,
-    Subject,
-    switchMap,
-    tap
-} from 'rxjs';
+import { BehaviorSubject, map, merge, Observable, scan, Subject, switchMap } from 'rxjs';
 import { APIService } from '../api/api-service';
 
 export type AuthCredentials = {
@@ -52,35 +42,38 @@ const enum Events {
     DidRegisterCompleted = 'DidRegisterCompleted',
     DidLoginCompleted = 'DidLoginCompleted',
     DidLogoutCompleted = 'DidLogoutCompleted',
-
     DidRegisterStarted = 'DidRegisterStarted'
 }
 
 const actions = {
-    didRegisterCompleted: (authCredentials: AuthCredentials) => ({
+    didRegisterCompleted: (authCredentials: AuthCredentials) =>
+        ({
             type: Events.DidRegisterCompleted,
             payload: {
                 authCredentials
             }
         } as const),
 
-    didLoginCompleted: (tokens: Tokens) => ({
+    didLoginCompleted: (tokens: Tokens) =>
+        ({
             type: Events.DidLoginCompleted,
             payload: {
                 tokens
             }
         } as const),
 
-    didLogoutCompleted: (response: LogoutResponse) => ({
+    didLogoutCompleted: (response: LogoutResponse) =>
+        ({
             type: Events.DidLogoutCompleted,
             payload: {
                 response
             }
         } as const),
 
-    didRegisterStarted: () => ({
-        type: Events.DidRegisterStarted
-    })
+    didRegisterStarted: () =>
+        ({
+            type: Events.DidRegisterStarted
+        } as const)
 };
 
 export function createAuthService(apiService: APIService): AuthService {
@@ -111,15 +104,17 @@ export function createAuthService(apiService: APIService): AuthService {
     const loginResult$ = onLogin$.pipe(
         switchMap(requestParams =>
             apiService.request<Tokens, LoginRequestParams>('/auth/login', requestParams, {
-            method: 'post'
-        })
+                method: 'post'
+            })
         )
     );
 
     const logoutResult$ = onLogout$.pipe(
-        switchMap(() => apiService.request<LogoutResponse, undefined>('/auth/logout', undefined, {
+        switchMap(() =>
+            apiService.request<LogoutResponse, undefined>('/auth/logout', undefined, {
                 method: 'post'
-            }))
+            })
+        )
     );
 
     const state$ = merge(
@@ -139,8 +134,6 @@ export function createAuthService(apiService: APIService): AuthService {
                 }
 
                 case Events.DidRegisterCompleted: {
-                    // const { authCredentials } = event.payload;
-
                     return {
                         ...state,
                         isLoading: false,
@@ -165,6 +158,8 @@ export function createAuthService(apiService: APIService): AuthService {
                         isAuthenticated: !response.msg
                     };
                 }
+                default:
+                    return state;
             }
         }, initialState)
     );
