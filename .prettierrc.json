@@ -1,9 +1,11 @@
 {
-    "plugins": [],
+    "semi": true,
     "printWidth": 100,
     "tabWidth": 4,
-    "endOfLine": "auto",
-    "trailingComma": "none",
+    "singleQuote": true,
+    "bracketSpacing": true,
+    "useTabs": false,
     "arrowParens": "avoid",
-    "singleQuote": true
+    "jsxSingleQuote": true,
+    "trailingComma": "none"
 }

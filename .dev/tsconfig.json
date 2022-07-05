@@ -2,9 +2,7 @@
     "compilerOptions": {
         "target": "ES2018",
         "module": "ESNext",
-        "lib": [
-            "ESNext"
-        ],
+        "lib": ["ESNext"],
         "sourceMap": true,
         "noEmit": false,
         "importHelpers": false,
@@ -33,4 +31,3 @@
         "incremental": true
     }
 }
- 

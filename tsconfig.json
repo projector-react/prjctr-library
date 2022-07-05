@@ -1,16 +1,9 @@
 {
     "extends": "./.dev/tsconfig.json",
     "compilerOptions": {
-        "lib": [
-            "DOM"
-        ],
-      "jsx": "react-jsx"
+        "lib": ["DOM"],
+        "jsx": "react-jsx"
     },
-    "exclude": [
-        "node_modules"
-    ],
-    "include": [
-        "./src/**/*.ts",
-        "./src/**/*.tsx"
-    ]
+    "exclude": ["node_modules"],
+    "include": ["./src/**/*.ts", "./src/**/*.tsx"]
 }

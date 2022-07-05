@@ -1,18 +1,18 @@
-import { Configuration } from "webpack";
-import { Configuration as WebpackDevServerConfiguration } from "webpack-dev-server";
-import HtmlWebpackPlugin from "html-webpack-plugin";
+import { Configuration } from 'webpack';
+import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const ReactRefreshTypeScript = require('react-refresh-typescript');
 
 export default (environment: string): Configuration & WebpackDevServerConfiguration => {
-    const isDevelopment = environment!== 'production';
+    const isDevelopment = environment !== 'production';
     return {
         entry: {
-            index: "./src/index.ts"
+            index: './src/index.ts'
         },
         output: {
-            publicPath: "/",
+            publicPath: '/'
         },
         module: {
             rules: [
@@ -24,30 +24,32 @@ export default (environment: string): Configuration & WebpackDevServerConfigurat
                             loader: require.resolve('ts-loader'),
                             options: {
                                 getCustomTransformers: () => ({
-                                    before: [isDevelopment && ReactRefreshTypeScript()].filter(Boolean),
+                                    before: [isDevelopment && ReactRefreshTypeScript()].filter(
+                                        Boolean
+                                    )
                                 }),
-                                transpileOnly: isDevelopment,
-                            },
-                        },
-                    ],
-                },
+                                transpileOnly: isDevelopment
+                            }
+                        }
+                    ]
+                }
             ]
         },
         resolve: {
-            extensions: [ '.ts', '.js', '.tsx', 'jsx' ]
+            extensions: ['.ts', '.js', '.tsx', 'jsx']
         },
         target: 'web',
         mode: isDevelopment ? 'development' : 'production',
-        devtool: "inline-source-map",
+        devtool: 'inline-source-map',
         devServer: {
             hot: true,
-            historyApiFallback: true,
+            historyApiFallback: true
         },
         plugins: [
             isDevelopment && new ReactRefreshWebpackPlugin(),
             new HtmlWebpackPlugin({
-                template: "./src/index.html"
+                template: './src/index.html'
             })
-        ].filter(Boolean),
-    }
-}
+        ].filter(Boolean)
+    };
+};

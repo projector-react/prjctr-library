@@ -18,7 +18,7 @@ export const AppRouter: FC = () => {
                     <Route path={getPath(RouteName.LOGIN)} element={<Login />} />
                     <Route path={getPath(RouteName.REGISTRATION)} element={<Registration />} />
                     <Route path={`${getPath(RouteName.VIDEO)}/:name`} element={<Video />} />
-                    <Route path="*" element={<NotFound />} />
+                    <Route path='*' element={<NotFound />} />
                 </Routes>
             </RouterProvider>
         </BrowserRouter>
