@@ -2,5 +2,5 @@
 
 ## Commands
 
-* **Start** - `yarn dev`
-* **Lint** - `yarn lint`
+-   **Start** - `yarn dev`
+-   **Lint** - `yarn lint`

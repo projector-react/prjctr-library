@@ -1,9 +1,13 @@
 import { createContext, FC, ReactNode, useContext, useMemo } from 'react';
 import { useObservableState } from 'observable-hooks';
-import { AuthService, createAuthService } from './auth-service';
+import { createAuthService, LoginRequestParams, RegisterRequestParams } from './auth-service';
 import { createAxiosHTTPService } from '../api/api-service';
 
-type AuthActions = Omit<AuthService, 'isAuthenticated'>;
+type AuthActions = {
+    readonly register: (requestParams: RegisterRequestParams) => void;
+    readonly login: (requestParams: LoginRequestParams) => void;
+    readonly logout: () => void;
+};
 
 export type AuthState = {
     isAuthenticated: boolean;
