@@ -1,4 +1,4 @@
-import { BehaviorSubject, map, merge, Observable, scan, Subject, switchMap } from 'rxjs';
+import { map, merge, Observable, ReplaySubject, scan, Subject, switchMap } from 'rxjs';
 import { APIService } from '../api/api-service';
 
 export type AuthCredentials = {
@@ -42,6 +42,7 @@ const enum Events {
     DidRegisterCompleted = 'DidRegisterCompleted',
     DidLoginCompleted = 'DidLoginCompleted',
     DidLogoutCompleted = 'DidLogoutCompleted',
+    DidRefreshCompleted = 'DidRefreshCompleted',
     DidRegisterStarted = 'DidRegisterStarted'
 }
 
@@ -62,6 +63,14 @@ const actions = {
             }
         } as const),
 
+    didRefreshCompleted: (tokens: Tokens) =>
+        ({
+            type: Events.DidRefreshCompleted,
+            payload: {
+                tokens
+            }
+        } as const),
+
     didLogoutCompleted: (response: LogoutResponse) =>
         ({
             type: Events.DidLogoutCompleted,
@@ -77,11 +86,10 @@ const actions = {
 };
 
 export function createAuthService(apiService: APIService): AuthService {
-    const onRegister$ = new Subject<AuthCredentials>();
+    const onRegister$ = new Subject<RegisterRequestParams>();
     const onLogin$ = new Subject<LoginRequestParams>();
     const onLogout$ = new Subject<void>();
-
-    const isAuthorized$ = new BehaviorSubject<boolean>(false);
+    const onRefreshToken$ = new ReplaySubject<void>(1);
 
     const registerResult$ = onRegister$.pipe(
         switchMap(async requestParams => {
@@ -117,9 +125,28 @@ export function createAuthService(apiService: APIService): AuthService {
         )
     );
 
+    const refreshResult$ = onRefreshToken$.pipe(
+        switchMap(async () => {
+            try {
+                const response = await apiService.request<Tokens, undefined>(
+                    '/auth/refresh',
+                    undefined,
+                    {
+                        method: 'post'
+                    }
+                );
+
+                return response;
+            } catch {
+                return {} as Tokens;
+            }
+        })
+    );
+
     const state$ = merge(
         registerResult$.pipe(map(actions.didRegisterCompleted)),
         loginResult$.pipe(map(actions.didLoginCompleted)),
+        refreshResult$.pipe(map(actions.didRefreshCompleted)),
         logoutResult$.pipe(map(actions.didLogoutCompleted)),
 
         onRegister$.pipe(map(actions.didRegisterStarted))
@@ -150,6 +177,15 @@ export function createAuthService(apiService: APIService): AuthService {
                     };
                 }
 
+                case Events.DidRefreshCompleted: {
+                    const { tokens } = event.payload;
+
+                    return {
+                        ...state,
+                        isAuthenticated: !!tokens?.access_token
+                    };
+                }
+
                 case Events.DidLogoutCompleted: {
                     const { response } = event.payload;
 
@@ -164,31 +200,7 @@ export function createAuthService(apiService: APIService): AuthService {
         }, initialState)
     );
 
-    async function refreshToken(): Promise<Pick<Tokens, 'access_token'>> {
-        return apiService.request<Pick<Tokens, 'access_token'>, undefined>(
-            '/auth/refresh',
-            undefined,
-            {
-                method: 'post'
-            }
-        );
-    }
-
-    function init() {
-        refreshToken()
-            .then(({ access_token: accessToken }) => {
-                if (accessToken) {
-                    isAuthorized$.next(true);
-                } else {
-                    isAuthorized$.next(false);
-                }
-            })
-            .catch(() => {
-                isAuthorized$.next(false);
-            });
-    }
-
-    init();
+    onRefreshToken$.next();
 
     return {
         isLoading$: state$.pipe(map(({ isLoading }) => isLoading)),
