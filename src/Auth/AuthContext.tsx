@@ -1,9 +1,13 @@
 import { createContext, FC, ReactNode, useContext, useMemo } from 'react';
 import { useObservableState } from 'observable-hooks';
-import { AuthService, createAuthService } from './auth-service';
+import { createAuthService, LoginRequestParams, RegisterRequestParams } from './auth-service';
 import { createAxiosHTTPService } from '../api/api-service';
 
-type AuthActions = Omit<AuthService, 'isAuthenticated'>;
+type AuthActions = {
+    readonly register: (requestParams: RegisterRequestParams) => void;
+    readonly login: (requestParams: LoginRequestParams) => void;
+    readonly logout: () => void;
+};
 
 export type AuthState = {
     isAuthenticated: boolean;
@@ -21,10 +25,14 @@ export type AuthProviderType = {
 
 export const AuthContext = createContext<AuthState>(authInitialState);
 
-const { isAuthenticated$, register, login, logout } = createAuthService(createAxiosHTTPService());
+const { isAuthenticated$, register, login, logout, init } = createAuthService(
+    createAxiosHTTPService()
+);
 
 export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
     const isAuth = useObservableState(isAuthenticated$, false);
+
+    init();
 
     const authState = useMemo(
         () => ({

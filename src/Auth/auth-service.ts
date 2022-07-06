@@ -24,6 +24,7 @@ export type AuthService = {
     readonly register: (requestParams: RegisterRequestParams) => void;
     readonly login: (requestParams: LoginRequestParams) => void;
     readonly logout: () => void;
+    readonly init: () => void;
 };
 
 type State = {
@@ -200,13 +201,12 @@ export function createAuthService(apiService: APIService): AuthService {
         }, initialState)
     );
 
-    onRefreshToken$.next();
-
     return {
         isLoading$: state$.pipe(map(({ isLoading }) => isLoading)),
         isAuthenticated$: state$.pipe(map(({ isAuthenticated }) => isAuthenticated)),
         register: params => onRegister$.next(params),
         login: creds => onLogin$.next(creds),
-        logout: () => onLogout$.next()
+        logout: () => onLogout$.next(),
+        init: () => onRefreshToken$.next()
     };
 }
