@@ -1,4 +1,4 @@
-import { createContext, FC, ReactNode, useContext, useMemo } from 'react';
+import { createContext, FC, ReactNode, useContext, useEffect, useMemo } from "react";
 import { useObservableState } from 'observable-hooks';
 import { createAuthService, LoginRequestParams, RegisterRequestParams } from './auth-service';
 import { createAxiosHTTPService } from '../api/api-service';
@@ -25,14 +25,16 @@ export type AuthProviderType = {
 
 export const AuthContext = createContext<AuthState>(authInitialState);
 
-const { isAuthenticated$, register, login, logout, init } = createAuthService(
+const { isAuthenticated$, register, login, logout, refreshToken } = createAuthService(
     createAxiosHTTPService()
 );
 
 export const AuthProvider: FC<AuthProviderType> = ({ children }) => {
     const isAuth = useObservableState(isAuthenticated$, false);
 
-    init();
+    useEffect(() => {
+        refreshToken();
+    }, []);
 
     const authState = useMemo(
         () => ({
