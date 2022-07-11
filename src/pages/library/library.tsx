@@ -18,29 +18,29 @@ export const Library: FC = () => {
             <h2>isAuthenticated:{isAuthenticated ? 'true' : 'false'}</h2>
 
             {!isAuthenticated ? (
-                <button type='button' onClick={() => actions.login(mockUser)}>
+                <button type="button" onClick={() => actions.login(mockUser)}>
                     Submit Login
                 </button>
             ) : (
-                <button type='button' onClick={actions.logout}>
+                <button type="button" onClick={actions.logout}>
                     Submit Logout
                 </button>
             )}
 
             <ul>
                 <li>
-                    <button type='button' onClick={() => navigate(getPath(RouteName.LOGIN))}>
+                    <button type="button" onClick={() => navigate(getPath(RouteName.LOGIN))}>
                         Login
                     </button>
                 </li>
                 <li>
-                    <button type='button' onClick={() => navigate(getPath(RouteName.REGISTRATION))}>
+                    <button type="button" onClick={() => navigate(getPath(RouteName.REGISTRATION))}>
                         Register
                     </button>
                 </li>
                 <li>
                     <button
-                        type='button'
+                        type="button"
                         onClick={() => navigate(`${getPath(RouteName.VIDEO)}/name`)}
                     >
                         Video
