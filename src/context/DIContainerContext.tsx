@@ -1,5 +1,5 @@
 import { createContext, FC, ReactNode, useContext } from 'react';
-import { container } from '../composition-root';
+import container from '../composition-root';
 
 const DIContainerContext = createContext(container);
 
