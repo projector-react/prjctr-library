@@ -1,10 +1,17 @@
 import { LibraryView, LibraryViewProps } from './libraryView';
 import { diInject } from '../../HOC/Incjector';
-import { AuthService } from '../../Auth/auth-service';
+import { Observable } from 'rxjs';
 
 export type Credentials = {
     readonly username: string;
     readonly password: string;
+};
+
+type AuthService = {
+    readonly isAuthenticated$: Observable<boolean>;
+    readonly login: (requestParams: Credentials) => boolean;
+    readonly logout: () => void;
+    readonly refreshToken: () => void;
 };
 
 export function createLibraryState(authService: AuthService): LibraryViewProps {
