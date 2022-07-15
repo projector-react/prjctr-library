@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { useDIContainer } from '../context/DIContainerContext';
 
+type DiInjectProps = {
+    children?: ReactNode;
+};
+
 export function diInject<P>(Component: React.JSXElementConstructor<P>, dependencyName: string) {
-    return function diInjectWrap() {
+    return function diInjectWrap(injectedProps: DiInjectProps) {
         const container = useDIContainer();
         const props = container.resolve(dependencyName);
 
@@ -10,6 +14,6 @@ export function diInject<P>(Component: React.JSXElementConstructor<P>, dependenc
             throw new Error(`${dependencyName} is not exist in DI container`);
         }
 
-        return <Component {...props} />;
+        return <Component {...{ ...props, ...injectedProps }} />;
     };
 }
