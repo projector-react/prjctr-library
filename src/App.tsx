@@ -1,9 +1,12 @@
 import { FC } from 'react';
 import { AppRouter } from './components/AppRouter/AppRouter';
-import { AuthProvider } from './Auth/AuthContext';
+import { DIContainerProvider } from './context/DIContainerContext';
+import { Auth } from './Auth/Auth';
 
 export const App: FC = () => (
-    <AuthProvider>
-        <AppRouter />
-    </AuthProvider>
+    <DIContainerProvider>
+        <Auth>
+            <AppRouter />
+        </Auth>
+    </DIContainerProvider>
 );

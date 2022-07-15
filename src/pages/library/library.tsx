@@ -1,52 +1,26 @@
-import { FC, useContext } from 'react';
-import { RouteName, RouterContext } from '../../Router/RouterContext';
-import { useAuthState } from '../../Auth/AuthContext';
+import { LibraryView, LibraryViewProps } from './libraryView';
+import { diInject } from '../../HOC/Incjector';
+import { Observable } from 'rxjs';
 
-export const Library: FC = () => {
-    const { navigate, getPath } = useContext(RouterContext);
-    const { isAuthenticated, actions } = useAuthState();
-
-    const mockUser = {
-        username: 'projector_user',
-        password: 'projector'
-    };
-
-    return (
-        <>
-            <h1>Library</h1>
-
-            <h2>isAuthenticated:{isAuthenticated ? 'true' : 'false'}</h2>
-
-            {!isAuthenticated ? (
-                <button type='button' onClick={() => actions.login(mockUser)}>
-                    Submit Login
-                </button>
-            ) : (
-                <button type='button' onClick={actions.logout}>
-                    Submit Logout
-                </button>
-            )}
-
-            <ul>
-                <li>
-                    <button type='button' onClick={() => navigate(getPath(RouteName.LOGIN))}>
-                        Login
-                    </button>
-                </li>
-                <li>
-                    <button type='button' onClick={() => navigate(getPath(RouteName.REGISTRATION))}>
-                        Register
-                    </button>
-                </li>
-                <li>
-                    <button
-                        type='button'
-                        onClick={() => navigate(`${getPath(RouteName.VIDEO)}/name`)}
-                    >
-                        Video
-                    </button>
-                </li>
-            </ul>
-        </>
-    );
+export type Credentials = {
+    readonly username: string;
+    readonly password: string;
 };
+
+type AuthService = {
+    readonly isAuthenticated$: Observable<boolean>;
+    readonly login: (requestParams: Credentials) => boolean;
+    readonly logout: () => void;
+    readonly refreshToken: () => void;
+};
+
+export function createLibraryState(authService: AuthService): LibraryViewProps {
+    authService.refreshToken();
+    return {
+        isAuthenticated$: authService.isAuthenticated$,
+        onLogin: authService.login,
+        onLogout: authService.logout
+    };
+}
+
+export const Library = diInject(LibraryView, 'libraryState');
